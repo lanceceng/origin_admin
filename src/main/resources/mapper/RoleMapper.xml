@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cat.origin.modules.mapper.RoleDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cat.origin.modules.entity.RoleEntity">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_id" property="updateId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, code, name, description, create_time, update_time, create_id, update_id
+    </sql>
+
+    <select id="selectUserRoles" resultMap="BaseResultMap" parameterType="map" >
+        select sr.*
+        from sys_role sr
+                 left join sys_role_user sur on sr.id = sur.role_id
+        where sur.user_id = #{userId}
+    </select>
+</mapper>

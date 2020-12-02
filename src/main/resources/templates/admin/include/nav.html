@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<header class="main-header" th:fragment="nav">
+    <a href="#" class="logo">
+        <span class="logo-mini"><b>A</b>LT</span>
+        <span class="logo-lg"><b>Admin</b>LTE</span>
+    </a>
+
+    <nav class="navbar navbar-static-top">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">菜单切换</span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="hidden-xs" th:text="${'欢迎您！' + session.s_sysUser.username}">欢迎您！</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="/admin/sys/user/info" class="btn btn-default btn-flat">个人资料</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="/admin/quit" class="btn btn-default btn-flat">退出</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+</html>

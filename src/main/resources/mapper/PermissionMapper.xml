@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cat.origin.modules.mapper.PermissionDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cat.origin.modules.entity.PermissionEntity">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="name" property="name" />
+        <result column="css" property="css" />
+        <result column="href" property="href" />
+        <result column="type" property="type" />
+        <result column="permission" property="permission" />
+        <result column="sort" property="sort" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent_id, name, css, href, type, permission, sort
+    </sql>
+
+    <select id="listUserPermissions" resultType="java.lang.String" parameterType="map" >
+        SELECT DISTINCT m.permission
+        FROM sys_permission m
+                 LEFT JOIN sys_role_permission srm ON m.id = srm.permission_id
+                 LEFT JOIN sys_role_user sur ON srm.role_id = sur.role_id
+        WHERE m.del_flag = 0
+          and sur.user_id = #{userId}
+    </select>
+
+    <select id="listAllPermissions" resultType="java.lang.String">
+        SELECT DISTINCT m.permission
+        FROM sys_permission m
+        WHERE m.del_flag = 0
+    </select>
+
+    <select id="getUserMenuList" resultMap="BaseResultMap" parameterType="map" >
+        SELECT DISTINCT
+            m.id,
+            m.parent_id,
+            m.name,
+            m.href,
+            m.permission,
+            m.type,
+            m.icon,
+            m.order_no
+        FROM
+            sys_permission m
+                LEFT JOIN sys_role_permission srm ON m.id = srm.permission_id
+                LEFT JOIN sys_role_user sur ON srm.role_id = sur.role_id
+                LEFT JOIN sys_role sr on sr.id = sur.role_id
+        WHERE m.status = 1
+          AND m.del_flag = 0
+          AND sur.user_id = #{userId}
+          AND m.type = 1
+          AND sr.del_flag = 0
+          AND sr.status = 1
+        order by m.order_no
+    </select>
+
+    <select id="listAllMenu" resultMap="BaseResultMap">
+        SELECT DISTINCT
+            m.id,
+            m.parent_id,
+            m.name,
+            m.href,
+            m.permission,
+            m.type,
+            m.icon,
+            m.order_no
+        FROM
+            sys_permission m
+        WHERE m.status = 1
+          AND del_flag = 0
+          AND m.type = 1
+        order by m.order_no
+    </select>
+
+    <select id="listAllMenuAndPerm" resultMap="BaseResultMap">
+        SELECT DISTINCT
+            m.id,
+            m.parent_id,
+            m.name,
+            m.href,
+            m.permission,
+            m.type,
+            m.icon,
+            m.order_no
+        FROM
+            sys_permission m
+        WHERE del_flag = 0
+        order by m.order_no
+    </select>
+
+    <!-- 查询给定分类下的所有子分类ID列表 -->
+    <select id="selectAllChildIds" resultType="java.lang.String" parameterType="map" >
+        select getMenuChildList(#{parentId,jdbcType=BIGINT})
+    </select>
+
+    <select id="getMaxOrderNo" resultType="java.lang.Integer" parameterType="map" >
+        select max(order_no) from sys_permission WHERE del_flag = 0
+        <if test="parentId != null" >
+            and parent_id = #{parentId,jdbcType=BIGINT}
+        </if>
+        <if test="parentId == null" >
+            and parent_id is null
+        </if>
+    </select>
+
+    <delete id="deleteMenu" parameterType="map" >
+        update sys_permission
+        set del_flag = 1
+        where id in (getMenuChildList(#{id}))
+    </delete>
+
+    <select id="listRoleMenu" resultMap="BaseResultMap" parameterType="map" >
+        SELECT
+            m.id,
+            m.parent_id,
+            m.name,
+            m.href,
+            m.permission,
+            m.type,
+            m.icon,
+            m.order_no
+        FROM
+            sys_permission m
+                LEFT JOIN sys_role_permission srm ON m.id = srm.permission_id
+        WHERE m.status = 1
+          AND m.del_flag = 0
+          AND srm.role_id = #{roleId}
+        order by m.order_no
+    </select>
+
+</mapper>

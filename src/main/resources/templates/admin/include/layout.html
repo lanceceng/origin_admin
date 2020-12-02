@@ -1,0 +1,19 @@
+<!-- 后台页面布局，自动包装head、menu、NAV和foot -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.thymeleaf.org">
+    <head>
+        <meta th:replace="admin/include/head :: head"/>
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+        <div id="wrapper" style="background-color: #222d32;">
+            <div class="main-header" th:include="admin/include/nav :: nav"></div>
+            <div class="main-sidebar" th:include="admin/include/menu :: menu"></div>
+            <div class="content-wrapper">
+                <div layout:fragment="content"></div>
+            </div>
+            <div class="main-footer" th:include="admin/include/foot :: foot"></div>
+        </div>
+    </body>
+</html>
+

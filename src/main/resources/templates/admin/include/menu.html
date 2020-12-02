@@ -1,0 +1,35 @@
+<div class="main-sidebar" th:fragment="menu" xmlns:th="http://www.w3.org/1999/xhtml">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="jpress_block"></li>
+            <li class="treeview active" id="dashboard">
+                <a href="/admin/index?p=0&c=0" onclick="location.href = '/admin/index?p=0&c=0'">
+                    <i class="fa fa-dashboard"></i>
+                    <span style="font-size: 14px;">管理首页</span>
+                </a>
+            </li>
+            <li class="jpress_block"></li>
+
+            <li th:each="menu : ${session.menuList}" class="treeview" th:attr="id=${'p_' + menu.id}"
+                th:if="${menu.parentId == null || menu.parentId == '' || menu.parentId == 0}">
+                <a href="#">
+                    <i th:class="${'fa fa-fw ' + menu.icon}"></i>
+                    <span th:text="${menu.name}"></span>
+                    <span class="pull-right-container">
+                      <span class="label label-primary pull-right"></span>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li th:each="cmenu : ${session.menuList}" th:if="${cmenu.parentId == menu.id}"
+                        th:attr="id=${'c_' + cmenu.id}">
+                        <a class="J_menuItem" th:href="${cmenu.href}">
+                            <i th:class="${'fa fa-fw ' + cmenu.icon}"></i><span th:text="${cmenu.name}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="jpress_block"></li>
+        </ul>
+    </section>
+</div>
