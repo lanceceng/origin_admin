@@ -246,6 +246,10 @@
             <!--<artifactId>flyway-maven-plugin</artifactId>-->
             <!--<version>5.0.7</version>-->
         <!--</plugin>-->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //				.antMatchers(HttpMethod.GET,"/admin/login").permitAll()
 //				.antMatchers(HttpMethod.GET,"/admin/index").permitAll()
 				.antMatchers("/admin/**").permitAll()
+				.antMatchers("/kafka/**").permitAll()
 				// 允许对于网站静态资源的无授权访问
 				.antMatchers("/", "/*.html", "/favicon.ico", "/css/**", "/js/**", "/fonts/**", "/layui/**", "/img/**",
 						"/v2/api-docs/**", "/swagger-resources/**", "/webjars/**",
